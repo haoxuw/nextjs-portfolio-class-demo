@@ -1,0 +1,25 @@
+on: push
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    # checkout the repo
+    - name: 'Checkout Github Action' 
+      uses: actions/checkout@master
+
+    - name: Setup Node 18.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: '18.x'
+    - name: 'npm install, build, and test'
+      run: |
+        npm install
+        npm run build --if-present
+        npm run test --if-present
+
+    - name: 'Run Azure webapp deploy action using publish profile credentials'
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: generic-web-fe
+        publish-profile: '<publishData><publishProfile profileName="generic-web-fe - Web Deploy" publishMethod="MSDeploy" publishUrl="generic-web-fe.scm.azurewebsites.net:443" msdeploySite="generic-web-fe" userName="$generic-web-fe" userPWD="iyPpRoDpLJBmvaBbj4xxEt6K4q0xxEng5rR7MfzNolmNguR6ykjTGnivpCvK" destinationAppUrl="https://generic-web-fe.azurewebsites.net" SQLServerDBConnectionString="" mySQLDBConnectionString="" hostingProviderForumLink="" controlPanelLink="http://windows.azure.com" webSystem="WebSites"><databases /></publishProfile><publishProfile profileName="generic-web-fe - FTP" publishMethod="FTP" publishUrl="ftps://waws-prod-yt1-027.ftp.azurewebsites.windows.net/site/wwwroot" ftpPassiveMode="True" userName="generic-web-fe\$generic-web-fe" userPWD="iyPpRoDpLJBmvaBbj4xxEt6K4q0xxEng5rR7MfzNolmNguR6ykjTGnivpCvK" destinationAppUrl="https://generic-web-fe.azurewebsites.net" SQLServerDBConnectionString="" mySQLDBConnectionString="" hostingProviderForumLink="" controlPanelLink="http://windows.azure.com" webSystem="WebSites"><databases /></publishProfile><publishProfile profileName="generic-web-fe - Zip Deploy" publishMethod="ZipDeploy" publishUrl="generic-web-fe.scm.azurewebsites.net:443" userName="$generic-web-fe" userPWD="iyPpRoDpLJBmvaBbj4xxEt6K4q0xxEng5rR7MfzNolmNguR6ykjTGnivpCvK" destinationAppUrl="https://generic-web-fe.azurewebsites.net" SQLServerDBConnectionString="" mySQLDBConnectionString="" hostingProviderForumLink="" controlPanelLink="http://windows.azure.com" webSystem="WebSites"><databases /></publishProfile></publishData>'
