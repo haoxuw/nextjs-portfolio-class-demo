@@ -52,7 +52,7 @@ export function WelcomeSection() {
 							}}
 						>
 							<p>
-								Hello, this is a experiment.
+								Hello, this is an experiment.
 							</p>
 						</h1>
 
